@@ -44,15 +44,50 @@ ok()    { printf "\033[1;32m[ok]\033[0m    %s\n" "$1"; }
 warn()  { printf "\033[1;33m[warn]\033[0m  %s\n" "$1"; }
 fail()  { printf "\033[1;31m[fail]\033[0m  %s\n" "$1"; }
 section() { printf "\n\033[1;35m━━ %s ━━\033[0m\n" "$1"; }
+die()   { fail "$1"; exit 1; }
+
+# Single backup suffix per run — re-runs don't clobber prior backups.
+BACKUP_SUFFIX=".bak.$(date +%Y%m%d-%H%M%S)"
+
+# ─── Preflight: verify repo is intact before we touch anything ────
+section "Preflight"
+[ -d "$DOTFILES" ] || die "DOTFILES=$DOTFILES does not exist."
+required_paths=(
+    "$DOTFILES/Brewfile"
+    "$DOTFILES/zsh/.zshrc"        "$DOTFILES/zsh/.zprofile"
+    "$DOTFILES/zsh/starship.toml"
+    "$DOTFILES/ccstatusline/settings.json"
+    "$DOTFILES/git/.gitconfig"    "$DOTFILES/git/.gitconfig-auditidentity"
+    "$DOTFILES/tmux/.tmux.conf"   "$DOTFILES/tmux/.tmux-cheatsheet.md"
+    "$DOTFILES/vim/.vimrc"
+    "$DOTFILES/nvim"
+    "$DOTFILES/lazygit/config.yml"
+    "$DOTFILES/bat/config"
+    "$DOTFILES/scripts/setup-dev-session.sh"
+    "$DOTFILES/ssh/config"
+)
+missing=()
+for p in "${required_paths[@]}"; do
+    [ -e "$p" ] || missing+=("$p")
+done
+if [ "${#missing[@]}" -gt 0 ]; then
+    fail "DOTFILES at $DOTFILES is incomplete. Missing:"
+    printf '  - %s\n' "${missing[@]}" >&2
+    die "Aborting before any symlinks are created."
+fi
+ok "Repo at $DOTFILES looks intact (${#required_paths[@]} required paths present)."
 
 # ─── Symlink helper ───────────────────────────────────────────────
+# Refuses to create a symlink whose source doesn't exist (no broken links),
+# and uses a per-run timestamped backup so re-runs don't overwrite earlier .bak.
 link_file() {
     local src="$1" dst="$2"
+    [ -e "$src" ] || die "Source missing: $src (refusing to link $dst)."
     if [ -L "$dst" ]; then
         rm "$dst"
     elif [ -f "$dst" ] || [ -d "$dst" ]; then
-        warn "Backing up existing $dst → ${dst}.bak"
-        mv "$dst" "${dst}.bak"
+        warn "Backing up existing $dst → ${dst}${BACKUP_SUFFIX}"
+        mv "$dst" "${dst}${BACKUP_SUFFIX}"
     fi
     mkdir -p "$(dirname "$dst")"
     ln -s "$src" "$dst"
@@ -83,15 +118,21 @@ section "Homebrew"
 if ! command -v brew &>/dev/null; then
     info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # Locate brew across architectures: Apple Silicon → /opt/homebrew, Intel → /usr/local, Linuxbrew → /home/linuxbrew/.linuxbrew.
+    for prefix in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew; do
+        if [ -x "$prefix/bin/brew" ]; then
+            eval "$("$prefix/bin/brew" shellenv)"
+            break
+        fi
+    done
+    command -v brew &>/dev/null || die "Homebrew installed but not on PATH — open a new shell and re-run."
 else
     ok "Homebrew already installed"
 fi
 
-if [ -f "$DOTFILES/Brewfile" ]; then
-    info "Installing Homebrew packages (this can take a while on a fresh machine)..."
-    brew bundle --file="$DOTFILES/Brewfile"
-fi
+# Brewfile presence was guaranteed by the preflight check; install unconditionally.
+info "Installing Homebrew packages (this can take a while on a fresh machine)..."
+brew bundle --file="$DOTFILES/Brewfile"
 
 if [ "$DO_CLEANUP_PREVIEW" -eq 1 ]; then
     section "Cleanup preview (read-only)"
