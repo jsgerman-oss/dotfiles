@@ -116,19 +116,22 @@ mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 link_file "$DOTFILES/ssh/config" "$HOME/.ssh/config"
 
 # ─── Global git hooks (commit-msg gate, etc.) ────────────────────
+# The tracked git/.gitconfig already sets core.hooksPath = ~/.dotfiles/.githooks
+# (a portable, machine-independent path). This section only ensures the hook
+# files are executable and runs a smoke test to catch a botched edit.
 section "Global git hooks"
 hooks_dir="$DOTFILES/.githooks"
 if [ -d "$hooks_dir" ]; then
-    # Make every executable hook actually executable (lost on fresh clone if umask weird).
     find "$hooks_dir" -type f -not -name '*.local' -exec chmod +x {} \;
-    current="$(git config --global --get core.hooksPath 2>/dev/null || true)"
-    if [ "$current" != "$hooks_dir" ]; then
-        info "Setting global core.hooksPath → $hooks_dir"
-        git config --global core.hooksPath "$hooks_dir"
+    # Verify the symlinked .gitconfig is wiring up our hooks dir
+    resolved="$(git config --global --get core.hooksPath 2>/dev/null || true)"
+    expanded="${resolved/#~/$HOME}"   # tilde-expand for comparison
+    if [ "$expanded" = "$hooks_dir" ] || [ "$expanded" = "$HOME/.dotfiles/.githooks" ]; then
+        ok "global core.hooksPath = $resolved"
     else
-        ok "global core.hooksPath already points at dotfiles"
+        warn "global core.hooksPath is '$resolved', expected ~/.dotfiles/.githooks"
+        warn "run: git config --global core.hooksPath '~/.dotfiles/.githooks'"
     fi
-    # Smoke-test that the gate rejects an obviously bad message
     if [ -x "$hooks_dir/commit-msg" ]; then
         tmp=$(mktemp); printf 'test\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n' > "$tmp"
         if "$hooks_dir/commit-msg" "$tmp" >/dev/null 2>&1; then
