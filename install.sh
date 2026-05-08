@@ -35,10 +35,6 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES="${DOTFILES:-$SCRIPT_DIR}"
 
-if [ ! -e "$HOME/.dotfiles" ] && [ "$DOTFILES" != "$HOME/.dotfiles" ]; then
-    ln -s "$DOTFILES" "$HOME/.dotfiles"
-fi
-
 info()  { printf "\033[1;34m[info]\033[0m  %s\n" "$1"; }
 ok()    { printf "\033[1;32m[ok]\033[0m    %s\n" "$1"; }
 warn()  { printf "\033[1;33m[warn]\033[0m  %s\n" "$1"; }
@@ -76,6 +72,12 @@ if [ "${#missing[@]}" -gt 0 ]; then
     die "Aborting before any symlinks are created."
 fi
 ok "Repo at $DOTFILES looks intact (${#required_paths[@]} required paths present)."
+
+# Bridge ~/.dotfiles → real repo location (only after preflight passed,
+# so an aborted run never plants stray symlinks in $HOME).
+if [ ! -e "$HOME/.dotfiles" ] && [ "$DOTFILES" != "$HOME/.dotfiles" ]; then
+    ln -s "$DOTFILES" "$HOME/.dotfiles"
+fi
 
 # ─── Symlink helper ───────────────────────────────────────────────
 # Refuses to create a symlink whose source doesn't exist (no broken links),
@@ -146,7 +148,11 @@ fi
 section "Zsh"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     info "Installing oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    # KEEP_ZSHRC=yes prevents the installer from clobbering our symlinked
+    # ~/.zshrc with its template (it would otherwise rename our link to
+    # ~/.zshrc.pre-oh-my-zsh and the user would silently lose this repo's
+    # config on fresh installs).
+    KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 else
     ok "oh-my-zsh already installed"
 fi
