@@ -1,7 +1,7 @@
 # MLX Training Studio — install notes
 
 Quick reference for installing and using [MLX Training Studio](https://github.com/stevenatkin/mlx-lm-gui)
-via the [jsgermanaai/mlx-training-studio-installer](https://github.com/jsgermanaai/mlx-training-studio-installer).
+via the [jsgerman-oss/mlx-training-studio-installer](https://github.com/jsgerman-oss/mlx-training-studio-installer).
 
 ## What it is
 
@@ -25,7 +25,7 @@ installer scripts here clone it, build it with Xcode, and copy the `.app` to
 ### One-time CLI install
 
 ```bash
-brew install jsgermanaai/tap/mlx-training-studio
+brew install jsgerman-oss/tap/mlx-training-studio
 ```
 
 ### Verify your environment
@@ -89,7 +89,7 @@ xattr -dr com.apple.quarantine "/Applications/MLX GUI.app"
 Or right-click the app the first time → Open → confirm.
 
 For everything else, see the
-[installer's troubleshooting guide](https://github.com/jsgermanaai/mlx-training-studio-installer/blob/main/docs/TROUBLESHOOTING.md).
+[installer's troubleshooting guide](https://github.com/jsgerman-oss/mlx-training-studio-installer/blob/main/docs/TROUBLESHOOTING.md).
 
 ## Credits
 

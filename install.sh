@@ -315,7 +315,7 @@ elif command -v mlx-training-studio &>/dev/null; then
     ok "mlx-training-studio CLI already installed"
 elif [ ! -t 0 ]; then
     info "Non-interactive shell — skipping prompt. To install later:"
-    info "  brew install jsgermanaai/tap/mlx-training-studio && mlx-training-studio install"
+    info "  brew install jsgerman-oss/tap/mlx-training-studio && mlx-training-studio install"
 else
     info "MLX Training Studio is a Swift GUI for LoRA/QLoRA fine-tuning on Apple Silicon."
     info "Installing the CLI is quick (~50KB). The actual app build needs full Xcode and ~5GB."
@@ -324,7 +324,7 @@ else
     case "$reply" in
         [yY]|[yY][eE][sS])
             info "Installing via Homebrew tap..."
-            brew install jsgermanaai/tap/mlx-training-studio \
+            brew install jsgerman-oss/tap/mlx-training-studio \
                 && ok "mlx-training-studio installed"
 
             # If full Xcode is present, offer to build the app immediately.
@@ -341,7 +341,7 @@ else
                 info "Next: install Xcode from the App Store, then run: mlx-training-studio install"
             fi
             ;;
-        *) info "Skipped. To install later: brew install jsgermanaai/tap/mlx-training-studio" ;;
+        *) info "Skipped. To install later: brew install jsgerman-oss/tap/mlx-training-studio" ;;
     esac
 fi
 
