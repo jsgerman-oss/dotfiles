@@ -115,6 +115,33 @@ link_file "$DOTFILES/scripts/setup-dev-session.sh" "$HOME/.setup-dev-session.sh"
 mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 link_file "$DOTFILES/ssh/config" "$HOME/.ssh/config"
 
+# ─── Global git hooks (commit-msg gate, etc.) ────────────────────
+section "Global git hooks"
+hooks_dir="$DOTFILES/.githooks"
+if [ -d "$hooks_dir" ]; then
+    # Make every executable hook actually executable (lost on fresh clone if umask weird).
+    find "$hooks_dir" -type f -not -name '*.local' -exec chmod +x {} \;
+    current="$(git config --global --get core.hooksPath 2>/dev/null || true)"
+    if [ "$current" != "$hooks_dir" ]; then
+        info "Setting global core.hooksPath → $hooks_dir"
+        git config --global core.hooksPath "$hooks_dir"
+    else
+        ok "global core.hooksPath already points at dotfiles"
+    fi
+    # Smoke-test that the gate rejects an obviously bad message
+    if [ -x "$hooks_dir/commit-msg" ]; then
+        tmp=$(mktemp); printf 'test\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n' > "$tmp"
+        if "$hooks_dir/commit-msg" "$tmp" >/dev/null 2>&1; then
+            warn "commit-msg gate did NOT reject a known-bad message — investigate $hooks_dir/commit-msg"
+        else
+            ok "commit-msg gate rejects LLM-attribution trailers"
+        fi
+        rm -f "$tmp"
+    fi
+else
+    warn "No $hooks_dir directory found — skipping commit-msg gate."
+fi
+
 # ─── Homebrew + Brewfile ─────────────────────────────────────────
 section "Homebrew"
 if ! command -v brew &>/dev/null; then
