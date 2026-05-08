@@ -15,7 +15,7 @@ Claude Code calls whatever command is set under `statusLine` in `~/.claude/setti
 }
 ```
 
-[`ccstatusline`](https://github.com/sirmalloc/ccstatusline) (npm package by sirmalloc) reads its layout from `~/.config/ccstatusline/settings.json`, which `install.sh` symlinks to [`ccstatusline/settings.json`](https://github.com/jsgermanaai/dotfiles/blob/main/ccstatusline/settings.json) in this repo.
+[`ccstatusline`](https://github.com/sirmalloc/ccstatusline) (npm package by sirmalloc) reads its layout from `~/.config/ccstatusline/settings.json`, which `install.sh` symlinks to [`ccstatusline/settings.json`](https://github.com/jsgerman-oss/dotfiles/blob/main/ccstatusline/settings.json) in this repo.
 
 ## Anatomy
 

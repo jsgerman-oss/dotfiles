@@ -6,14 +6,14 @@
 Themed end-to-end across nvim, tmux, starship, lazygit, fzf, bat, and ccstatusline. Reproducible from one script.
 
 [![macOS](https://img.shields.io/badge/macOS-Apple%20Silicon-2D5BFF?style=for-the-badge&logo=apple&logoColor=white)](#)
-[![Theme](https://img.shields.io/badge/theme-cobalt%20%2B%20magenta-FF1FE7?style=for-the-badge)](https://jsgermanaai.github.io/dotfiles/palette/)
+[![Theme](https://img.shields.io/badge/theme-cobalt%20%2B%20magenta-FF1FE7?style=for-the-badge)](https://jsgerman-oss.github.io/dotfiles/palette/)
 [![Editor](https://img.shields.io/badge/editor-LazyVim-2D5BFF?style=for-the-badge&logo=neovim&logoColor=white)](https://www.lazyvim.org)
 [![Prompt](https://img.shields.io/badge/prompt-Starship-FF1FE7?style=for-the-badge&logo=starship&logoColor=white)](https://starship.rs)
 [![Shell](https://img.shields.io/badge/shell-zsh%20%2F%20oh--my--zsh-2D5BFF?style=for-the-badge&logo=gnu-bash&logoColor=white)](https://ohmyz.sh)
 
 <img src="docs/screenshots/palette.png" alt="Cobalt + Magenta palette" width="700"/>
 
-**[Live docs site →](https://jsgermanaai.github.io/dotfiles/)**
+**[Live docs site →](https://jsgerman-oss.github.io/dotfiles/)**
 
 </div>
 
@@ -31,11 +31,11 @@ Then:
 
 1. Set your terminal (cmux / Ghostty / iTerm2) font to **JetBrainsMono Nerd Font** (already brewed)
 2. Open a fresh shell — `exec zsh`
-3. Drop secrets in `~/.zshrc.local` (see [caveats](https://jsgermanaai.github.io/dotfiles/caveats/))
+3. Drop secrets in `~/.zshrc.local` (see [caveats](https://jsgerman-oss.github.io/dotfiles/caveats/))
 
 The installer handles symlinks, brews, oh-my-zsh, plugins, fzf bindings, tmux plugins (headless), Neovim plugins (headless), and Mason LSPs.
 
-**[What `./install.sh` actually does, command by command →](https://jsgermanaai.github.io/dotfiles/install/)**
+**[What `./install.sh` actually does, command by command →](https://jsgerman-oss.github.io/dotfiles/install/)**
 
 ---
 
@@ -90,7 +90,7 @@ The same 12-token palette is shared across every TUI surface so context-switchin
 
 `zsh/starship.toml` is the source of truth; nvim, tmux, lazygit, ccstatusline, fzf, mkdocs all consume the same hex values.
 
-**[Full palette walkthrough →](https://jsgermanaai.github.io/dotfiles/palette/)**
+**[Full palette walkthrough →](https://jsgerman-oss.github.io/dotfiles/palette/)**
 
 ---
 
@@ -120,35 +120,35 @@ dotfiles/
 └── .github/           ← CI for the docs deploy
 ```
 
-**[Full layout walkthrough →](https://jsgermanaai.github.io/dotfiles/layout/)**
+**[Full layout walkthrough →](https://jsgerman-oss.github.io/dotfiles/layout/)**
 
 ---
 
 ## Documentation
 
-The full walkthrough lives at **[jsgermanaai.github.io/dotfiles/](https://jsgermanaai.github.io/dotfiles/)** — every section, every command, every recipe.
+The full walkthrough lives at **[jsgerman-oss.github.io/dotfiles/](https://jsgerman-oss.github.io/dotfiles/)** — every section, every command, every recipe.
 
 | Surface | Doc |
 |---------|-----|
-| 3-line starship prompt | [Prompt →](https://jsgermanaai.github.io/dotfiles/prompt/) |
-| Modern CLI stack | [CLI →](https://jsgermanaai.github.io/dotfiles/cli/) |
-| fzf shortcuts | [fzf →](https://jsgermanaai.github.io/dotfiles/fzf/) |
-| LazyVim + Go + K8s + AI | [Neovim →](https://jsgermanaai.github.io/dotfiles/nvim/) |
-| Local AI in nvim | [Local AI →](https://jsgermanaai.github.io/dotfiles/ai/) |
-| Tmux with cobalt + magenta status bar | [Tmux →](https://jsgermanaai.github.io/dotfiles/tmux/) |
-| Git workflow + delta | [Git →](https://jsgermanaai.github.io/dotfiles/git/) |
-| Lazygit | [Lazygit →](https://jsgermanaai.github.io/dotfiles/lazygit/) |
-| On-demand Docker / k8s via Colima | [Colima →](https://jsgermanaai.github.io/dotfiles/colima/) |
-| Claude Code statusline | [ccstatusline →](https://jsgermanaai.github.io/dotfiles/ccstatusline/) |
-| Install walkthrough | [Install →](https://jsgermanaai.github.io/dotfiles/install/) |
-| Repository layout | [Layout →](https://jsgermanaai.github.io/dotfiles/layout/) |
-| Caveats and gotchas | [Caveats →](https://jsgermanaai.github.io/dotfiles/caveats/) |
+| 3-line starship prompt | [Prompt →](https://jsgerman-oss.github.io/dotfiles/prompt/) |
+| Modern CLI stack | [CLI →](https://jsgerman-oss.github.io/dotfiles/cli/) |
+| fzf shortcuts | [fzf →](https://jsgerman-oss.github.io/dotfiles/fzf/) |
+| LazyVim + Go + K8s + AI | [Neovim →](https://jsgerman-oss.github.io/dotfiles/nvim/) |
+| Local AI in nvim | [Local AI →](https://jsgerman-oss.github.io/dotfiles/ai/) |
+| Tmux with cobalt + magenta status bar | [Tmux →](https://jsgerman-oss.github.io/dotfiles/tmux/) |
+| Git workflow + delta | [Git →](https://jsgerman-oss.github.io/dotfiles/git/) |
+| Lazygit | [Lazygit →](https://jsgerman-oss.github.io/dotfiles/lazygit/) |
+| On-demand Docker / k8s via Colima | [Colima →](https://jsgerman-oss.github.io/dotfiles/colima/) |
+| Claude Code statusline | [ccstatusline →](https://jsgerman-oss.github.io/dotfiles/ccstatusline/) |
+| Install walkthrough | [Install →](https://jsgerman-oss.github.io/dotfiles/install/) |
+| Repository layout | [Layout →](https://jsgerman-oss.github.io/dotfiles/layout/) |
+| Caveats and gotchas | [Caveats →](https://jsgerman-oss.github.io/dotfiles/caveats/) |
 
 ---
 
 ## Caveats highlights
 
-A few of the gotchas worth knowing before you run `./install.sh`. The full list lives at [caveats →](https://jsgermanaai.github.io/dotfiles/caveats/).
+A few of the gotchas worth knowing before you run `./install.sh`. The full list lives at [caveats →](https://jsgerman-oss.github.io/dotfiles/caveats/).
 
 - **Brewfile is a fresh-machine spec, not an inventory.** Manual one-off `brew install` won't be in the file. Don't run `brew bundle cleanup --force` against it.
 - **Set the terminal font in the terminal app's UI.** JetBrainsMono Nerd Font is brewed but you must point your terminal at it.
