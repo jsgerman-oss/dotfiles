@@ -65,8 +65,8 @@ freeze_file() {
 #                     (py)
 echo "[1/8] starship prompt (rich context)..."
 {
-    printf "${C_GREY}╭─${R} ${C_COBALT}${B}(dir) ~/work/auditidentity${R}  ${C_MAGENTA}on (branch) main !2 +1 ?3${R}                  ${C_GREY}[bat] ${C_AMBER}74%%${R} ${C_GREY}[time] 14:32${R}\n"
-    printf "${C_GREY}│ ${R} ${C_CYAN}[k8s] aks-prod (default)${R} ${C_COBALT}${B}[az] Armada-Prod${R} ${C_GREEN}(py) 3.12.1 (venv)${R} ${C_AMBER}took 4s${R}\n"
+    printf "${C_GREY}╭─${R} ${C_COBALT}${B}(dir) ~/Code/dotfiles${R}  ${C_MAGENTA}on (branch) main !2 +1 ?3${R}                       ${C_GREY}[bat] ${C_AMBER}74%%${R} ${C_GREY}[time] 14:32${R}\n"
+    printf "${C_GREY}│ ${R} ${C_CYAN}[k8s] docker-desktop (default)${R} ${C_GREEN}(py) 3.12.1 (venv)${R} ${C_AMBER}took 4s${R}\n"
     printf "${C_GREY}╰─${R}${C_COBALT}${B}>${R} kubectl get pods -A\n"
 } > "$WORK/starship.ans"
 freeze_file "$WORK/starship.ans" starship-prompt

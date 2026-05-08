@@ -22,7 +22,7 @@ Themed end-to-end across nvim, tmux, starship, lazygit, fzf, bat, and ccstatusli
 ## Quick Start
 
 ```bash
-git clone <this-repo> ~/.dotfiles
+git clone https://github.com/jsgerman-oss/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```

@@ -11,7 +11,7 @@ A neon-cobalt + magenta development environment for **macOS**. Themed end-to-end
 ![Cobalt + Magenta palette](screenshots/palette.png){: .cobalt-hero-palette }
 
 ```bash
-git clone <this-repo> ~/.dotfiles
+git clone https://github.com/jsgerman-oss/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```

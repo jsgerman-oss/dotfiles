@@ -3,7 +3,7 @@
 What `./install.sh` actually does, command by command. Idempotent and safe to re-run.
 
 ```bash
-git clone <this-repo> ~/.dotfiles
+git clone https://github.com/jsgerman-oss/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```

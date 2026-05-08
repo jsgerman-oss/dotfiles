@@ -11,7 +11,7 @@ Every segment is contextual: it only shows when it has something useful to say.
 
 ```text
 # Line 1 (left format)                                  + right_format
-╭─  ~/work/dotfiles   on   main !8 ?15           🐳   [bat]  [time]
+╭─  ~/Code/dotfiles   on   main !8 ?15           🐳   [bat]  [time]
    │                  │    │                      │      │     │
    │                  │    │                      │      │     └─ time
    │                  │    │                      │      └─ battery
@@ -21,11 +21,10 @@ Every segment is contextual: it only shows when it has something useful to say.
    └─ directory
 
 # Line 2
-│  ⎈ aks-prod (default)  󰠅 Armada-Prod   3.12.1 (venv)  took 4s
-│   │                    │              │              │
-│   │                    │              │              └─ cmd_duration
-│   │                    │              └─ python
-│   │                    └─ azure
+│  ⎈ docker-desktop (default)   3.12.1 (venv)  took 4s
+│   │                          │              │
+│   │                          │              └─ cmd_duration
+│   │                          └─ python
 │   └─ kubernetes
 
 # Line 3
