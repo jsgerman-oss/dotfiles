@@ -112,7 +112,9 @@ alias killds="find . -type f -name '*.DS_Store' -ls -delete"
 alias gall='git add .'
 alias ga='git add'
 alias gap='git add -p'
-alias gc='git commit -m'
+alias gcm='git commit -m'
+unalias gc 2>/dev/null    # free up `gc` (was oh-my-zsh git plugin: git commit --verbose)
+alias gcv='git commit --verbose'
 alias gs='git status'
 alias gpush='git push -u origin'
 alias glog='git log --oneline --graph --decorate --color'
@@ -288,3 +290,5 @@ bd-push() {
 
 # ─── Machine-local secrets and overrides (not in git) ────────────
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

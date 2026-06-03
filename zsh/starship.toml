@@ -1,62 +1,65 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# ─── Layout ──────────────────────────────────────────────────────
-# Line 1: dir + git
-# Line 2: kubernetes + azure + python + cmd duration
-# Line 3: prompt character
-# Right side of line 1: battery + time
-format = """
-[╭─](grey) $directory$git_branch$git_status${custom.colima}
-[│ ](grey)$kubernetes$azure$python$cmd_duration
-[╰─](grey)$character"""
+# ─── One-line powerline prompt ──────────────────────────────────
+# Every module is a self-contained colored "pill" (rounded nerd-font
+# caps  ) wrapped in a starship conditional ( … ) group. When a
+# module has nothing to show, the whole pill — caps included — is not
+# rendered, so the prompt collapses/expands cleanly with context.
+# No connected-arrow seams to break when a middle segment hides.
+#
+# Layout (left, single line):
+#    host?   dir   git   k8s   azure   lang   took   🐳   ❯
+# Right side:  battery   time
+format = "$hostname$directory$git_branch$git_status$kubernetes$azure$python$nodejs$golang$terraform$cmd_duration${custom.colima}$character"
+right_format = "$battery$time"
 
-right_format = """$battery$time"""
-
-add_newline = true
+add_newline = false
 palette = "cobalt"
 
 # ─── Palette ────────────────────────────────────────────────────
 [palettes.cobalt]
-cobalt   = "#2D5BFF"
-magenta  = "#FF1FE7"
-grey     = "#6b7280"
-fg       = "#e0e0ee"
-amber    = "#F59E0B"
-red      = "#FF4D4D"
-green    = "#22EE99"
-cyan     = "#22D3EE"
-purple   = "#c0a3ff"
+cobalt  = "#2D5BFF"
+magenta = "#FF1FE7"
+grey    = "#6b7280"
+fg      = "#e0e0ee"
+amber   = "#F59E0B"
+red     = "#FF4D4D"
+green   = "#22EE99"
+cyan    = "#22D3EE"
+purple  = "#c0a3ff"
+ink     = "#10101a"   # dark text for bright pills
 
 # ─── Prompt character ───────────────────────────────────────────
 [character]
 success_symbol = "[❯](bold cobalt)"
-error_symbol   = "[✗ ❯](bold magenta)"
+error_symbol   = "[✗❯](bold magenta)"
 vimcmd_symbol  = "[❮](bold green)"
 
-# ─── Directory ──────────────────────────────────────────────────
+# ─── Hostname pill (SSH only, leads the line) ───────────────────
+[hostname]
+ssh_only = true
+format   = "([](fg:red)[ 󰢩 $hostname ](fg:ink bg:red)[](fg:red) )"
+
+# ─── Directory pill (always shown, cobalt) ──────────────────────
 [directory]
-format             = "[ $path ]($style)[$read_only]($read_only_style)"
-style              = "bold cobalt"
-read_only          = " "
-read_only_style    = "magenta"
-truncation_length  = 4
-truncation_symbol  = "…/"
-truncate_to_repo   = true
+format            = "[](fg:cobalt)[ $path$read_only](fg:fg bg:cobalt)[](fg:cobalt) "
+read_only         = " "
+truncation_length = 4
+truncation_symbol = "…/"
+truncate_to_repo  = true
 
 [directory.substitutions]
 "~/Documents/GitHub" = " gh"
 "~/work"             = " work"
 "~/Code"             = " code"
 
-# ─── Git ────────────────────────────────────────────────────────
+# ─── Git pills (magenta) ────────────────────────────────────────
 [git_branch]
 symbol = " "
-format = "[on $symbol$branch]($style) "
-style  = "magenta"
+format = "([](fg:magenta)[ $symbol$branch ](fg:ink bg:magenta)[](fg:magenta) )"
 
 [git_status]
-format    = "([$all_status$ahead_behind]($style) )"
-style     = "magenta"
+format     = "([](fg:magenta)[ $all_status$ahead_behind](fg:ink bg:magenta)[](fg:magenta) )"
 conflicted = "✖ "
 ahead      = "⇡${count} "
 behind     = "⇣${count} "
@@ -68,43 +71,67 @@ staged     = "+${count} "
 renamed    = "»${count} "
 deleted    = "✘${count} "
 
-# ─── Kubernetes ─────────────────────────────────────────────────
+# ─── Kubernetes pill (cyan) ─────────────────────────────────────
 [kubernetes]
-disabled = false
-symbol   = "⎈ "
-format   = "[$symbol$context( \\($namespace\\))]($style) "
-style    = "cyan"
+disabled     = false
+symbol       = "⎈ "
+format       = "([](fg:cyan)[ $symbol$context( \\($namespace\\)) ](fg:ink bg:cyan)[](fg:cyan) )"
 detect_files = ["k8s", "Chart.yaml"]
 [kubernetes.context_aliases]
 "arn:aws:eks:.*:.*:cluster/(?P<cluster>[\\w-]+)" = "$cluster"
 
-# ─── Azure ──────────────────────────────────────────────────────
+# ─── Azure pill (purple) ────────────────────────────────────────
 [azure]
 disabled = false
 symbol   = "󰠅 "
-format   = "[$symbol($subscription)]($style) "
-style    = "bold cobalt"
+format   = "([](fg:purple)[ $symbol$subscription ](fg:ink bg:purple)[](fg:purple) )"
 
-# ─── Python ─────────────────────────────────────────────────────
+# ─── Python pill (green) ────────────────────────────────────────
 [python]
-symbol = " "
-format = "[${symbol}${pyenv_prefix}(${version})( \\($virtualenv\\))]($style) "
-style  = "green"
+symbol            = " "
+format            = "([](fg:green)[ $symbol$pyenv_prefix($version)( \\($virtualenv\\)) ](fg:ink bg:green)[](fg:green) )"
 detect_extensions = ["py"]
 detect_files      = ["pyproject.toml", "requirements.txt", "Pipfile", ".python-version"]
 
-# ─── Command duration ──────────────────────────────────────────
+# ─── Node pill (green) ──────────────────────────────────────────
+[nodejs]
+disabled     = false
+symbol       = " "
+format       = "([](fg:green)[ $symbol$version ](fg:ink bg:green)[](fg:green) )"
+detect_files = ["package.json", ".node-version", ".nvmrc"]
+
+# ─── Go pill (cyan) ─────────────────────────────────────────────
+[golang]
+disabled = false
+symbol   = " "
+format   = "([](fg:cyan)[ $symbol$version ](fg:ink bg:cyan)[](fg:cyan) )"
+
+# ─── Terraform pill (purple) ────────────────────────────────────
+[terraform]
+disabled = false
+symbol   = "󱁢 "
+format   = "([](fg:purple)[ $symbol$workspace ](fg:ink bg:purple)[](fg:purple) )"
+
+# ─── Command duration pill (amber) ──────────────────────────────
 [cmd_duration]
 min_time          = 2_000
-format            = "[took $duration]($style) "
-style             = "amber"
+format            = "([](fg:amber)[ $duration ](fg:ink bg:amber)[](fg:amber) )"
 show_milliseconds = false
 
-# ─── Battery (right side of line 1) ─────────────────────────────
+# ─── Colima/Docker accent (🐳 when the VM is up) ────────────────
+# A stat() on the docker socket — microseconds, never slows the prompt.
+[custom.colima]
+description    = "Show 🐳 when colima VM is running"
+when           = "test -S $HOME/.colima/default/docker.sock"
+command        = "echo 🐳"
+format         = "[ $output ](bold green)"
+ignore_timeout = true
+
+# ─── Battery (right side, color-coded text) ─────────────────────
 [battery]
-format = "[$symbol$percentage]($style) "
-full_symbol      = "󰁹 "
-charging_symbol  = "󰂄 "
+format             = "[ $symbol$percentage]($style)"
+full_symbol        = "󰁹 "
+charging_symbol    = "󰂄 "
 discharging_symbol = "󰂃 "
 [[battery.display]]
 threshold = 20
@@ -116,64 +143,22 @@ style     = "amber"
 threshold = 100
 style     = "grey"
 
-# ─── Time (right side of line 1) ────────────────────────────────
+# ─── Time pill (right side, grey) ───────────────────────────────
 [time]
 disabled    = false
-format      = "[ $time ](grey)"
+format      = "[](fg:grey)[ $time ](fg:fg bg:grey)[](fg:grey)"
 time_format = "%H:%M"
 
-# ─── Disabled by default but listed for easy enable later ──────
+# ─── Disabled / situational modules ─────────────────────────────
 [username]
 show_always = false
-style_user  = "bold cobalt"
-format      = "[$user]($style)@"
-
-[hostname]
-ssh_only = true
-format   = "[$hostname](magenta) "
-
 [aws]
 disabled = true
-
 [gcloud]
 disabled = true
-
-[nodejs]
-disabled = false
-symbol   = " "
-format   = "[$symbol($version )]($style)"
-style    = "green"
-detect_files = ["package.json", ".node-version", ".nvmrc"]
-
-[golang]
-disabled = false
-symbol   = " "
-format   = "[$symbol($version )]($style)"
-style    = "cyan"
-
-[terraform]
-disabled = false
-symbol   = "󱁢 "
-format   = "[$symbol$workspace]($style) "
-style    = "purple"
-
 [docker_context]
 disabled = true
-
 [package]
 disabled = true
-
 [line_break]
-disabled = false
-
-# ─── Custom: Colima/Docker status ───────────────────────────────
-# Shows a green 🐳 in the prompt when the colima VM is running, hidden when off.
-# Detects via the docker socket file — colima creates it when running, removes
-# on stop. A stat() is microseconds, so this never slows the prompt down.
-[custom.colima]
-description = "Show 🐳 when colima VM is running"
-when         = "test -S $HOME/.colima/default/docker.sock"
-command      = "echo '🐳'"
-format       = "[ $output]($style)"
-style        = "bold green"
-ignore_timeout = true
+disabled = true
